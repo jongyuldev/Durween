@@ -1,6 +1,6 @@
 {
   "name": "durween-companion",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Desktop Companion for Durween",
   "main": "main.js",
   "scripts": {

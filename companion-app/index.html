@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Durween Companion</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     body {
       background-color: transparent;
@@ -185,20 +186,9 @@
         document.body.className = '';
         if (mood) document.body.classList.add('mood-' + mood);
 
-        // Simple Markdown Parser (Same as before)
-        let formattedText = text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/```(\w*)([\s\S]*?)```/g, (match, lang, code) => `<pre><code class="language-${lang}">${code.trim()}</code></pre>`)
-            .replace(/`([^`]+)`/g, '<code>$1</code>')
-            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-            .replace(/\n/g, '<br>');
+        // Use marked library for parsing
+        bubble.innerHTML = marked.parse(text);
         
-        formattedText = formattedText.replace(/<pre>([\s\S]*?)<\/pre>/g, (match) => match.replace(/<br>/g, '\n'));
-
-        bubble.innerHTML = formattedText;
         bubble.classList.remove('visible');
         setTimeout(() => bubble.classList.add('visible'), 100);
     }
