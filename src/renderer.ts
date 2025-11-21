@@ -94,16 +94,17 @@ let clickTimeout: NodeJS.Timeout | null = null;
 
 if (clippyBody && speechBubble) {
     // Dragging Logic
-    clippyBody.addEventListener('mousedown', (e) => {
-        if (e.button === 0) { // Left click only
+    clippyBody.addEventListener('pointerdown', (e) => {
+        if (e.isPrimary && e.button === 0) { // Primary pointer, left button
             isDragging = false;
             startX = e.screenX;
             startY = e.screenY;
+            clippyBody.setPointerCapture(e.pointerId);
         }
     });
 
-    document.addEventListener('mousemove', (e) => {
-        if (e.buttons === 1 && !isDragging) { // Left button held
+    clippyBody.addEventListener('pointermove', (e) => {
+        if (e.isPrimary && !isDragging && clippyBody.hasPointerCapture(e.pointerId)) {
              const dx = Math.abs(e.screenX - startX);
              const dy = Math.abs(e.screenY - startY);
              if (dx > 5 || dy > 5) {
@@ -113,7 +114,8 @@ if (clippyBody && speechBubble) {
         }
     });
 
-    document.addEventListener('mouseup', () => {
+    clippyBody.addEventListener('pointerup', (e) => {
+        clippyBody.releasePointerCapture(e.pointerId);
         if (isDragging) {
             ipcRenderer.send('stop-drag');
             // Keep isDragging true for a moment so the click handler knows
