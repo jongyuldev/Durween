@@ -1,0 +1,46 @@
+{
+  "name": "durween",
+  "displayName": "Durween",
+  "description": "AI Coding Navigator",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "durween.start",
+        "title": "Durween: Summon Assistant"
+      },
+      {
+        "command": "durween.helloWorld",
+        "title": "Durween: Hello World"
+      },
+      {
+        "command": "durween.askGemini",
+        "title": "Durween: Ask Gemini"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.2.3"
+  }
+}
