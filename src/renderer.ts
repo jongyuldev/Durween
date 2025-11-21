@@ -19,6 +19,9 @@ const toggleDrift = document.getElementById('toggle-drift') as HTMLInputElement;
 
 let isBubbleVisible = false;
 let mouseDownTime = 0;
+let isDragging = false;
+let startX = 0;
+let startY = 0;
 
 // Settings State
 let rageEnabled = true;
@@ -93,13 +96,29 @@ if (clippyBody && speechBubble) {
     // Dragging Logic
     clippyBody.addEventListener('mousedown', (e) => {
         if (e.button === 0) { // Left click only
-            mouseDownTime = Date.now();
-            ipcRenderer.send('start-drag');
+            isDragging = false;
+            startX = e.screenX;
+            startY = e.screenY;
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (e.buttons === 1 && !isDragging) { // Left button held
+             const dx = Math.abs(e.screenX - startX);
+             const dy = Math.abs(e.screenY - startY);
+             if (dx > 5 || dy > 5) {
+                 isDragging = true;
+                 ipcRenderer.send('start-drag');
+             }
         }
     });
 
     document.addEventListener('mouseup', () => {
-        ipcRenderer.send('stop-drag');
+        if (isDragging) {
+            ipcRenderer.send('stop-drag');
+            // Keep isDragging true for a moment so the click handler knows
+            setTimeout(() => isDragging = false, 50);
+        }
     });
 
     // Double Click for Settings
@@ -123,9 +142,12 @@ if (clippyBody && speechBubble) {
         }
     });
 
-    clippyBody.addEventListener('click', () => {
-        // If the click was long (>200ms), assume it was a drag and don't toggle bubble
-        if (Date.now() - mouseDownTime > 200) return;
+    clippyBody.addEventListener('click', (e) => {
+        // If it was a drag, ignore click
+        if (isDragging) {
+            e.stopPropagation();
+            return;
+        }
 
         // Reset Rage Mode on click
         document.body.classList.remove('rage');

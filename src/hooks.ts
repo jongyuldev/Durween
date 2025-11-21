@@ -4,17 +4,32 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 
 // Load .env from project root
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const SLACK_TOKEN = process.env.SLACK_TOKEN;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+let octokit: Octokit;
+let slackClient: WebClient;
+
+function initClients() {
+    if (octokit && slackClient) return;
+
+    try {
+        dotenv.config({ path: path.resolve(__dirname, '../.env') });
+    } catch (e) {
+        console.error("Failed to load .env", e);
+    }
+
+    const SLACK_TOKEN = process.env.SLACK_TOKEN;
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
+    octokit = new Octokit({ auth: GITHUB_TOKEN });
+    slackClient = new WebClient(SLACK_TOKEN);
+}
+
 const GITHUB_OWNER = 'jongyuldev';
 const GITHUB_REPO = 'Durween';
 
-const octokit = new Octokit({ auth: GITHUB_TOKEN });
-const slackClient = new WebClient(SLACK_TOKEN);
-
 export async function checkSlackForContext(currentFileName: string): Promise<string | null> {
+    initClients();
     try {
         // 1. Search Slack messages for the file name
         const result = await slackClient.search.messages({
@@ -42,6 +57,7 @@ export async function checkSlackForContext(currentFileName: string): Promise<str
 }
 
 export async function getGitHubPRFeedback(currentBranchName: string): Promise<string | null> {
+    initClients();
     try {
         // 1. Find the PR associated with the branch
         const { data: pullRequests } = await octokit.pulls.list({
