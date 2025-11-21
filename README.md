@@ -17,24 +17,39 @@ Most AI extensions feel like tools. Durween feels like a buddy.
 ## Features
 
 *   **🧠 Gemini 2.5 Flash Brain:** Powered by Google's latest model. It's fast, smart, and handles the free tier like a champ.
+*   **🌍 Global Analysis:** Durween can now analyze your entire workspace file structure to give context-aware answers about your whole project.
+*   **🖥️ Desktop Companion:** A standalone Electron app that floats on your desktop, giving you a coding buddy that lives outside the editor.
 *   **💡 Lightbulb Integration:** Refactor code, fix bugs, or generate docs directly from the Quick Fix menu.
-*   **💬 Rich Responses:** Code suggestions come back beautifully formatted with syntax highlighting.
+*   **💬 Rich Responses:** Code suggestions come back beautifully formatted with Markdown and syntax highlighting.
 *   **👀 Interactive UI:** The sprite reacts to your mouse and changes "moods" (Thinking, Cool, Happy) based on what it's doing.
 
 ## How to Run It
 
-1.  **Clone the repo.**
-2.  **Install dependencies:**
+### 1. The Extension
+1.  **Install dependencies:**
     ```bash
     npm install
     ```
-3.  **Get your API Key:**
+2.  **Get your API Key:**
     *   Grab a free API key from [Google AI Studio](https://aistudio.google.com/).
     *   Create a `.env` file in the root folder.
     *   Add: `GEMINI_API_KEY=your_key_here`
-4.  **Launch:**
-    *   Press `F5` in VS Code.
-    *   Run the command: `Durween: Summon Assistant`.
+
+### 2. The Companion App
+1.  **Navigate to the app folder:**
+    ```bash
+    cd companion-app
+    ```
+2.  **Install and Run:**
+    ```bash
+    npm install
+    npm start
+    ```
+    *This launches the floating Durween sprite.*
+
+### 3. Connect
+1.  **Launch the Extension:** Press `F5` in VS Code.
+2.  **Summon:** Run the command `Durween: Summon Assistant` to connect VS Code to the Companion App.
 
 ## Usage
 
@@ -48,7 +63,9 @@ Most AI extensions feel like tools. Durween feels like a buddy.
 
 ## Tech Stack
 
-*   **VS Code Extension API** (Webviews, CodeActions)
+*   **VS Code Extension API** (CodeActions, Commands)
+*   **Electron** (Companion App)
+*   **WebSockets** (Real-time communication)
 *   **Google Generative AI SDK**
 *   **TypeScript**
 *   **HTML/CSS** (for the sprite animations)
