@@ -1,8 +1,0 @@
-# Project Specs
-
-- [x] Initialize Electron project
-- [x] Create Clippy UI
-- [x] Implement Specs Parsing
-- [x] Implement Steering Docs Integration
-- [x] Connect to MCP Server
-- [ ] Win the Hackathon
