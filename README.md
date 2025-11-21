@@ -55,10 +55,8 @@ Most AI extensions feel like tools. Durween feels like a buddy.
 
 1.  **Summon Him:** Run `Durween: Summon Assistant` to bring up the sprite. Drag the tab to make it a floating window if you want the full "desktop pet" experience.
 2.  **Ask for Help:**
-    *   Write a comment like `// TODO: Refactor this function`.
-    *   Or just highlight some messy code.
-    *   Click the **Lightbulb icon** (💡) that appears.
-    *   Select **"Durween: Ask Gemini"**.
+    *   **Shortcut:** Highlight code and press `Alt+Shift+D`.
+    *   **Lightbulb:** Write a comment like `// TODO: Refactor this function`, click the **Lightbulb icon** (💡), and select **"Durween: Ask Gemini"**.
 3.  **Watch him work:** The sprite will "think" (shake animation) and then pop up a speech bubble with the fix.
 
 ## Tech Stack

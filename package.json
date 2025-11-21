@@ -27,6 +27,14 @@
         "command": "durween.askGemini",
         "title": "Durween: Ask Gemini"
       }
+    ],
+    "keybindings": [
+      {
+        "command": "durween.askGemini",
+        "key": "shift+alt+d",
+        "mac": "shift+opt+d",
+        "when": "editorTextFocus"
+      }
     ]
   },
   "scripts": {

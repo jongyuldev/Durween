@@ -121,8 +121,20 @@ export function activate(context: vscode.ExtensionContext) {
 
     // 3. Register the Ask Gemini Command
     context.subscriptions.push(
-        vscode.commands.registerCommand('durween.askGemini', async (document: vscode.TextDocument, range: vscode.Range) => {
+        vscode.commands.registerCommand('durween.askGemini', async (document?: vscode.TextDocument, range?: vscode.Range) => {
             
+            // Handle keybinding execution (no args provided)
+            if (!document || !range) {
+                const editor = vscode.window.activeTextEditor;
+                if (editor) {
+                    document = editor.document;
+                    range = editor.selection;
+                } else {
+                    vscode.window.showErrorMessage("Durween: No active text editor found.");
+                    return;
+                }
+            }
+
             // Notify Companion
             broadcastToCompanion("Hmm, let me take a look at that...", "thinking");
 
