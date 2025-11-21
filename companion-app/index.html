@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Durween Companion</title>
+  <style>
+    body {
+      background-color: transparent;
+      margin: 0;
+      padding: 20px; /* Padding for shadow/drag */
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end; /* Sit at bottom */
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    /* Draggable Area */
+    .drag-handle {
+      -webkit-app-region: drag;
+      cursor: grab;
+    }
+
+    /* The Sprite */
+    .durween-sprite {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle at 30% 30%, #fff, #4a90e2);
+      border-radius: 50%;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      position: relative;
+      transition: transform 0.3s ease;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .pupil {
+      width: 40px;
+      height: 40px;
+      background: #000;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.1s ease;
+    }
+
+    /* Speech Bubble */
+    .bubble {
+      position: relative;
+      background: #fff;
+      color: #333;
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 20px; /* Space above sprite */
+      width: 100%;
+      max-height: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      
+      /* Text Formatting */
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    /* Arrow pointing down to sprite */
+    .bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #fff transparent;
+      display: block;
+      width: 0;
+      transform: translateX(-50%);
+    }
+
+    .bubble.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Markdown Styles */
+    .bubble pre {
+        background: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        margin: 10px 0;
+        white-space: pre-wrap;
+    }
+    .bubble code {
+        background: #f4f4f4;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 0.9em;
+    }
+
+    /* Animations */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .mood-thinking .durween-sprite { animation: shake 0.5s infinite; }
+    @keyframes shake {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(5deg); }
+        75% { transform: rotate(-5deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="bubble" id="bubble">
+    Waiting for VS Code...
+  </div>
+
+  <div class="durween-sprite drag-handle" id="sprite">
+    <div class="pupil"></div>
+  </div>
+
+  <script>
+    const sprite = document.getElementById('sprite');
+    const bubble = document.getElementById('bubble');
+    const pupil = document.querySelector('.pupil');
+
+    // Connect to VS Code Extension via WebSocket
+    function connect() {
+        const ws = new WebSocket('ws://localhost:54321');
+
+        ws.onopen = () => {
+            console.log('Connected to VS Code');
+            bubble.textContent = "Connected to VS Code! I'm ready.";
+            bubble.classList.add('visible');
+        };
+
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            if (message.command === 'speak') {
+                speak(message.text, message.mood);
+            }
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected. Retrying...');
+            setTimeout(connect, 3000);
+        };
+
+        ws.onerror = (err) => {
+            console.error('Socket error', err);
+            ws.close();
+        };
+    }
+
+    function speak(text, mood) {
+        // Reset mood
+        document.body.className = '';
+        if (mood) document.body.classList.add('mood-' + mood);
+
+        // Simple Markdown Parser (Same as before)
+        let formattedText = text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/```(\w*)([\s\S]*?)```/g, (match, lang, code) => `<pre><code class="language-\${lang}">\${code.trim()}</code></pre>`)
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+            .replace(/\n/g, '<br>');
+        
+        formattedText = formattedText.replace(/<pre>([\s\S]*?)<\/pre>/g, (match) => match.replace(/<br>/g, '\n'));
+
+        bubble.innerHTML = formattedText;
+        bubble.classList.remove('visible');
+        setTimeout(() => bubble.classList.add('visible'), 100);
+    }
+
+    // Eye Tracking (Follow Mouse on Screen)
+    // Note: In a transparent window, we only get mouse events when hovering the window elements.
+    // To track globally, we'd need main process logic, but this is good for "looking at you when you interact".
+    window.addEventListener('mousemove', (e) => {
+        const re = sprite.getBoundingClientRect();
+        const anchorX = re.left + re.width / 2;
+        const anchorY = re.top + re.height / 2;
+        
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        
+        const angle = Math.atan2(mouseY - anchorY, mouseX - anchorX);
+        
+        const distance = Math.min(10, Math.hypot(mouseX - anchorX, mouseY - anchorY) / 10);
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        
+        pupil.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    });
+
+    // Start connection
+    connect();
+
+  </script>
+</body>
+</html>

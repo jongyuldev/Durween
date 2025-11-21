@@ -7,9 +7,20 @@ const vscode = require("vscode");
 const generative_ai_1 = require("@google/generative-ai");
 const dotenv = require("dotenv");
 const path = require("path");
-const DurweenPanel_1 = require("./DurweenPanel");
+const ws_1 = require("ws");
 // Load .env from the extension root
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
+// WebSocket Server to talk to the Desktop Companion
+let wss;
+function broadcastToCompanion(message, mood = 'happy') {
+    if (wss) {
+        wss.clients.forEach(client => {
+            if (client.readyState === 1) { // Open
+                client.send(JSON.stringify({ command: 'speak', text: message, mood }));
+            }
+        });
+    }
+}
 async function askGeminiForHelp(document, range) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -42,27 +53,38 @@ ${codeContext}
 }
 function activate(context) {
     console.log('Durween is now active!');
+    // Start the WebSocket Server
+    try {
+        wss = new ws_1.WebSocketServer({ port: 54321 });
+        console.log('Durween Companion Server running on port 54321');
+        wss.on('connection', (ws) => {
+            console.log('Companion App Connected!');
+            ws.send(JSON.stringify({ command: 'speak', text: "Connected to VS Code! I'm ready.", mood: 'happy' }));
+        });
+    }
+    catch (e) {
+        console.error('Failed to start WebSocket server:', e);
+    }
     // 1. Register the CodeActionProvider
     const durweenProvider = new DurweenActionProvider();
     const selector = { scheme: 'file', language: '*' };
     context.subscriptions.push(vscode.languages.registerCodeActionsProvider(selector, durweenProvider, {
         providedCodeActionKinds: DurweenActionProvider.providedCodeActionKinds
     }));
-    // 2. Register the Panel Command
+    // 2. Register the Panel Command (Now just a placeholder or launch instruction)
     context.subscriptions.push(vscode.commands.registerCommand('durween.start', () => {
-        DurweenPanel_1.DurweenPanel.createOrShow(context.extensionUri);
+        vscode.window.showInformationMessage('Durween Server is running! Launch the "companion-app" to see the sprite.');
     }));
     // 3. Register the Ask Gemini Command
     context.subscriptions.push(vscode.commands.registerCommand('durween.askGemini', async (document, range) => {
-        // Ensure panel is open
-        DurweenPanel_1.DurweenPanel.createOrShow(context.extensionUri);
-        DurweenPanel_1.DurweenPanel.speak("Hmm, let me take a look at that...", "thinking");
+        // Notify Companion
+        broadcastToCompanion("Hmm, let me take a look at that...", "thinking");
         try {
             const aiSuggestion = await askGeminiForHelp(document, range);
-            DurweenPanel_1.DurweenPanel.speak(aiSuggestion, "cool");
+            broadcastToCompanion(aiSuggestion, "cool");
         }
         catch (error) {
-            DurweenPanel_1.DurweenPanel.speak(`Ouch! Brain freeze: ${error}`, "thinking");
+            broadcastToCompanion(`Ouch! Brain freeze: ${error}`, "thinking");
         }
     }));
 }
