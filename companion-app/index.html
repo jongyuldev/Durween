@@ -139,8 +139,9 @@
     const pupil = document.querySelector('.pupil');
 
     // Connect to VS Code Extension via WebSocket
+    let ws;
     function connect() {
-        const ws = new WebSocket('ws://localhost:54321');
+        ws = new WebSocket('ws://localhost:54321');
 
         ws.onopen = () => {
             console.log('Connected to VS Code');
@@ -165,6 +166,17 @@
             ws.close();
         };
     }
+
+    // Handle Global Shortcut Event from Main Process
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.on('analyze-clipboard', (event, text) => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            speak("Analyzing your selection...", "thinking");
+            ws.send(JSON.stringify({ command: 'analyze', text: text }));
+        } else {
+            speak("I'm not connected to VS Code right now!", "thinking");
+        }
+    });
 
     function speak(text, mood) {
         // Reset mood

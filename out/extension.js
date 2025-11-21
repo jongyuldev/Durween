@@ -21,14 +21,27 @@ function broadcastToCompanion(message, mood = 'happy') {
         });
     }
 }
-async function askGeminiForHelp(document, range) {
+// Refactored to take a raw string
+async function askGeminiString(textToAnalyze) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
         throw new Error("GEMINI_API_KEY not found in .env file");
     }
     const genAI = new generative_ai_1.GoogleGenerativeAI(apiKey);
-    // Use gemini-2.5-flash which is the current standard for fast/free tier usage
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const prompt = `
+You are Durween, an expert AI coding assistant.
+Analyze the following text or code snippet and provide a helpful explanation, suggestion, or fix.
+Be concise and use Markdown.
+
+Text/Code:
+${textToAnalyze}
+`;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
+}
+async function askGeminiForHelp(document, range) {
     let codeContext = document.getText(range);
     // Smart Context: If the selection is empty or small (just a cursor or single line),
     // expand the range to give the AI more context (e.g. +/- 20 lines).
@@ -38,18 +51,7 @@ async function askGeminiForHelp(document, range) {
         const expandedRange = new vscode.Range(startLine, 0, endLine, document.lineAt(endLine).text.length);
         codeContext = `// Context (User cursor at line ${range.start.line + 1}):\n${document.getText(expandedRange)}`;
     }
-    const prompt = `
-You are Durween, an expert AI coding assistant.
-Analyze the following code snippet and provide a helpful suggestion, refactor, or fix.
-Be concise and provide code comments or a brief explanation.
-
-Code:
-${codeContext}
-`;
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-    return text;
+    return askGeminiString(codeContext);
 }
 function activate(context) {
     console.log('Durween is now active!');
@@ -60,6 +62,24 @@ function activate(context) {
         wss.on('connection', (ws) => {
             console.log('Companion App Connected!');
             ws.send(JSON.stringify({ command: 'speak', text: "Connected to VS Code! I'm ready.", mood: 'happy' }));
+            // Listen for messages FROM the companion (e.g. "Analyze this text")
+            ws.on('message', async (message) => {
+                try {
+                    const data = JSON.parse(message.toString());
+                    if (data.command === 'analyze') {
+                        broadcastToCompanion("Reading your mind... (and your clipboard)", "thinking");
+                        // We need a dummy document/range for the existing function, 
+                        // OR we refactor askGeminiForHelp to take a string.
+                        // Let's refactor askGeminiForHelp slightly to be more flexible.
+                        const aiSuggestion = await askGeminiString(data.text);
+                        broadcastToCompanion(aiSuggestion, "cool");
+                    }
+                }
+                catch (e) {
+                    console.error('Error processing message from companion:', e);
+                    broadcastToCompanion("I couldn't understand that.", "thinking");
+                }
+            });
         });
     }
     catch (e) {
@@ -109,6 +129,16 @@ class DurweenActionProvider {
                 arguments: [document, range]
             };
             actions.push(action);
+        }
+        // Generic "Ask Durween" for any selection
+        if (!range.isEmpty) {
+            const analyzeAction = new vscode.CodeAction('Durween: Analyze Selection', vscode.CodeActionKind.Refactor);
+            analyzeAction.command = {
+                command: 'durween.askGemini',
+                title: 'Ask Gemini',
+                arguments: [document, range]
+            };
+            actions.push(analyzeAction);
         }
         // Example Check 2: "Hello World" Placeholder (Always show for demo)
         const helloAction = new vscode.CodeAction('Durween: Say Hello', vscode.CodeActionKind.Empty);
