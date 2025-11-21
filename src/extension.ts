@@ -17,7 +17,17 @@ async function askGeminiForHelp(document: vscode.TextDocument, range: vscode.Ran
     // Use gemini-2.5-flash which is the current standard for fast/free tier usage
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    const codeContext = document.getText(range);
+    let codeContext = document.getText(range);
+
+    // Smart Context: If the selection is empty or small (just a cursor or single line),
+    // expand the range to give the AI more context (e.g. +/- 20 lines).
+    if (codeContext.trim().length < 50) {
+        const startLine = Math.max(0, range.start.line - 20);
+        const endLine = Math.min(document.lineCount - 1, range.end.line + 20);
+        const expandedRange = new vscode.Range(startLine, 0, endLine, document.lineAt(endLine).text.length);
+        codeContext = `// Context (User cursor at line ${range.start.line + 1}):\n${document.getText(expandedRange)}`;
+    }
+
     const prompt = `
 You are Durween, an expert AI coding assistant.
 Analyze the following code snippet and provide a helpful suggestion, refactor, or fix.

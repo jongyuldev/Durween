@@ -134,6 +134,51 @@ export class DurweenPanel {
           opacity: 0;
           transform: translateY(20px);
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          
+          /* Text Formatting */
+          font-size: 14px;
+          line-height: 1.5;
+          overflow-wrap: break-word;
+          
+          /* Scrollability */
+          max-height: 60vh;
+          overflow-y: auto;
+          scrollbar-width: thin; /* Firefox */
+        }
+        
+        /* Custom Scrollbar for Webkit */
+        .bubble::-webkit-scrollbar {
+            width: 6px;
+        }
+        .bubble::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .bubble::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+
+        .bubble pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 10px 0;
+            white-space: pre-wrap; /* Wrap long lines */
+        }
+
+        .bubble code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .bubble pre code {
+            background: none;
+            padding: 0;
         }
         
         .bubble::after {
@@ -207,8 +252,32 @@ export class DurweenPanel {
                 document.body.classList.add('mood-' + message.mood);
             }
 
+            // Simple Markdown Parser
+            let formattedText = message.text
+                // Escape HTML first to prevent XSS (basic)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                // Code Blocks (\`\`\`language ... \`\`\`)
+                .replace(/\\\`\\\`\\\`(\\w*)([\\s\\S]*?)\\\`\\\`\\\`/g, (match, lang, code) => {
+                    return \`<pre><code class="language-\${lang}">\${code.trim()}</code></pre>\`;
+                })
+                // Inline Code (\`...\`)
+                .replace(/\\\`([^\\\`]+)\\\`/g, '<code>$1</code>')
+                // Bold (**...**)
+                .replace(/\\*\\*([^*]+)\\*\\*/g, '<strong>$1</strong>')
+                // Italic (*...*)
+                .replace(/\\*([^*]+)\\*/g, '<em>$1</em>')
+                // Newlines to <br> (only outside of pre tags - simplified approach)
+                .replace(/\\n/g, '<br>');
+
+            // Fix <br> inside <pre> (revert them back to newlines for the pre tag to handle)
+            formattedText = formattedText.replace(/<pre>([\\s\\S]*?)<\\/pre>/g, (match) => {
+                return match.replace(/<br>/g, '\\n');
+            });
+
             // Update text
-            bubble.textContent = message.text;
+            bubble.innerHTML = formattedText;
             bubble.classList.remove('visible');
             
             // Pop in effect
