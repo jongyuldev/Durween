@@ -16,7 +16,8 @@ async function askGeminiForHelp(document, range) {
         throw new Error("GEMINI_API_KEY not found in .env file");
     }
     const genAI = new generative_ai_1.GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    // Use gemini-2.5-flash which is the current standard for fast/free tier usage
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const codeContext = document.getText(range);
     const prompt = `
 You are Durween, an expert AI coding assistant.

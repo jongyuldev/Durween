@@ -14,7 +14,8 @@ async function askGeminiForHelp(document: vscode.TextDocument, range: vscode.Ran
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    // Use gemini-2.5-flash which is the current standard for fast/free tier usage
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const codeContext = document.getText(range);
     const prompt = `
