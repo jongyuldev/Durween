@@ -7,8 +7,10 @@
     body {
       background-color: transparent;
       margin: 0;
-      padding: 20px; /* Padding for shadow/drag */
+      padding: 20px;
+      padding-bottom: 40px; /* Extra space for the sprite */
       height: 100vh;
+      box-sizing: border-box; /* Ensure padding is included in height */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -56,7 +58,7 @@
       padding: 15px;
       margin-bottom: 20px; /* Space above sprite */
       width: 100%;
-      max-height: 400px;
+      max-height: 350px; /* Reduced slightly to prevent overflow */
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       opacity: 0;
       transform: translateY(20px);
@@ -188,7 +190,7 @@
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
-            .replace(/```(\w*)([\s\S]*?)```/g, (match, lang, code) => `<pre><code class="language-\${lang}">\${code.trim()}</code></pre>`)
+            .replace(/```(\w*)([\s\S]*?)```/g, (match, lang, code) => `<pre><code class="language-${lang}">${code.trim()}</code></pre>`)
             .replace(/`([^`]+)`/g, '<code>$1</code>')
             .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
             .replace(/\*([^*]+)\*/g, '<em>$1</em>')

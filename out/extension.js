@@ -28,13 +28,16 @@ async function askGeminiString(textToAnalyze) {
         throw new Error("GEMINI_API_KEY not found in .env file");
     }
     const genAI = new generative_ai_1.GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `
-You are Durween, an expert AI coding assistant.
-Analyze the following text or code snippet and provide a helpful explanation, suggestion, or fix.
-Be concise and use Markdown.
+You are Durween, an intelligent and helpful AI assistant.
+You are analyzing a text snippet provided by the user.
+1. Determine if the text is code or natural language.
+2. If it is code, explain it, find bugs, or suggest improvements.
+3. If it is natural language, summarize it, explain complex concepts, or answer questions implied by the text.
+Be concise, friendly, and use Markdown formatting.
 
-Text/Code:
+Input:
 ${textToAnalyze}
 `;
     const result = await model.generateContent(prompt);
@@ -65,19 +68,22 @@ function activate(context) {
             // Listen for messages FROM the companion (e.g. "Analyze this text")
             ws.on('message', async (message) => {
                 try {
-                    const data = JSON.parse(message.toString());
+                    const msgString = message.toString();
+                    console.log('Received from companion:', msgString);
+                    const data = JSON.parse(msgString);
                     if (data.command === 'analyze') {
+                        if (!data.text || !data.text.trim()) {
+                            broadcastToCompanion("I didn't see any text selected! Try highlighting again.", "thinking");
+                            return;
+                        }
                         broadcastToCompanion("Reading your mind... (and your clipboard)", "thinking");
-                        // We need a dummy document/range for the existing function, 
-                        // OR we refactor askGeminiForHelp to take a string.
-                        // Let's refactor askGeminiForHelp slightly to be more flexible.
                         const aiSuggestion = await askGeminiString(data.text);
                         broadcastToCompanion(aiSuggestion, "cool");
                     }
                 }
                 catch (e) {
                     console.error('Error processing message from companion:', e);
-                    broadcastToCompanion("I couldn't understand that.", "thinking");
+                    broadcastToCompanion(`Ouch! Error: ${e.message || e}`, "thinking");
                 }
             });
         });

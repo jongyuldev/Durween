@@ -47,8 +47,10 @@ function createWindow() {
                 console.log('Captured text:', text.substring(0, 20) + '...');
                 // Send to Renderer -> WebSocket -> VS Code
                 win.webContents.send('analyze-clipboard', text);
+            } else {
+                console.log('Clipboard was empty');
             }
-        }, 200);
+        }, 500);
     });
   });
 }
