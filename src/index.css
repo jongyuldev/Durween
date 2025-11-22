@@ -1,0 +1,99 @@
+:root {
+  --clippy-yellow: #FFD700;
+  --clippy-eye: #000000;
+  --clippy-eyebrow: #000000;
+  --clippy-paper: #FFFFFF;
+  --clippy-shadow: rgba(0, 0, 0, 0.2);
+  --bg-color: #008080;
+  /* Windows 98 Teal */
+  --window-bg: #C0C0C0;
+  --window-text: #000000;
+  --window-border-light: #FFFFFF;
+  --window-border-dark: #808080;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  /* Transparent for Clippy */
+  font-family: var(--font-main);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+.task-window-container {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  /* Teal background for Task Window */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Retro Window Style Utility */
+.retro-window {
+  background-color: var(--window-bg);
+  border: 2px solid;
+  border-color: var(--window-border-light) var(--window-border-dark) var(--window-border-dark) var(--window-border-light);
+  box-shadow: 1px 1px 0px #000000;
+  padding: 2px;
+}
+
+.retro-title-bar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: white;
+  padding: 3px 5px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.retro-button {
+  background-color: var(--window-bg);
+  border: 1px solid;
+  border-color: var(--window-border-light) var(--window-border-dark) var(--window-border-dark) var(--window-border-light);
+  box-shadow: 1px 1px 0px #000000;
+
+  .retro-button:active {
+    border-color: var(--window-border-dark) var(--window-border-light) var(--window-border-light) var(--window-border-dark);
+  }
+
+  cursor: pointer;
+  padding: 4px 8px;
+  font-family: var(--font-main);
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  95% {
+    transform: scaleY(0.1);
+  }
+}
