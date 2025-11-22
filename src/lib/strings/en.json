@@ -1,0 +1,71 @@
+{
+  "app": {
+    "title": "Clippy",
+    "subtitle": "Your intelligent task scheduler",
+    "loading": "Loading..."
+  },
+  "taskInput": {
+    "placeholder": "Add task: taskName(30) or 'do emails for 20 minutes'",
+    "buttonAdd": "Add",
+    "buttonAdding": "Adding...",
+    "ariaLabel": "Task input"
+  },
+  "scheduleView": {
+    "title": "Today's Schedule",
+    "emptyState": "No schedule blocks yet. Add tasks and generate a schedule to get started.",
+    "buttonStart": "Start",
+    "buttonInProgress": "In Progress",
+    "buttonCompleted": "Completed",
+    "durationLabel": "min"
+  },
+  "timerPanel": {
+    "emptyState": "No active session. Start a task from your schedule to begin tracking time.",
+    "currentTaskLabel": "Current Task",
+    "elapsedTimeLabel": "Elapsed Time",
+    "buttonPause": "Pause",
+    "buttonResume": "Resume",
+    "buttonFinish": "Finish",
+    "statusPaused": "Session paused",
+    "ariaPause": "Pause session",
+    "ariaResume": "Resume session",
+    "ariaFinish": "Finish session"
+  },
+  "analyticsPanel": {
+    "title": "Today's Progress",
+    "completedTasksLabel": "Completed Tasks",
+    "focusMinutesLabel": "Focus Minutes",
+    "loadingPlaceholder": "-"
+  },
+  "generateSchedule": {
+    "button": "Generate Schedule"
+  },
+  "errors": {
+    "parseEmpty": "Please enter a task",
+    "parseInvalidFormat": "Unable to parse task. Use format: taskName(duration) or 'Do X for Y minutes'",
+    "parseInvalidDuration": "Duration must be a positive number",
+    "storageFailed": "Failed to save task",
+    "storageQuotaExceeded": "Storage quota exceeded. Please clear old data.",
+    "loadFailed": "Failed to load data from storage",
+    "scheduleGenerateFailed": "Failed to generate schedule",
+    "scheduleNoTasks": "No tasks to schedule. Add some tasks first.",
+    "sessionStartFailed": "Failed to start session",
+    "sessionUpdateFailed": "Failed to update session state",
+    "analyticsFetchFailed": "Failed to fetch analytics"
+  },
+  "warnings": {
+    "unscheduledTasks": "{count} task(s) couldn't fit in today's schedule"
+  },
+  "notifications": {
+    "sessionStartTitle": "Session Started",
+    "sessionStartMessage": "Started working on: {taskName}",
+    "sessionCompleteTitle": "Session Complete",
+    "sessionCompleteMessage": "Completed: {taskName}",
+    "sessionOverrunTitle": "Time Exceeded",
+    "sessionOverrunMessage": "{taskName} has exceeded its allocated time. Keep going or wrap up when ready."
+  },
+  "nudges": {
+    "idle": "Still working on {taskName}? Take a moment to check in with yourself.",
+    "overrun": "You're doing great! {taskName} is taking a bit longer than planned. That's okay—finish strong or wrap up when you're ready.",
+    "encouragement": "Nice work! You're making progress on {taskName}."
+  }
+}
