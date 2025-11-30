@@ -234,7 +234,8 @@ body {
 #userInput {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 10px 12px;
+  height: 44px;
+  padding: 0 12px;
   border: 2px solid rgba(157, 78, 221, 0.5);
   border-radius: 12px;
   font-size: 13px;
@@ -256,7 +257,8 @@ body {
 }
 
 #screenshotBtn {
-  padding: 10px 12px;
+  height: 44px;
+  padding: 0 14px;
   background: linear-gradient(135deg, #9D4EDD 0%, #7209B7 100%);
   color: #FFD700;
   border: 2px solid rgba(157, 78, 221, 0.5);
@@ -267,6 +269,9 @@ body {
   box-shadow: 0 4px 12px rgba(157, 78, 221, 0.5), 0 0 20px rgba(157, 78, 221, 0.2);
   font-weight: 600;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #screenshotBtn:hover {
@@ -292,7 +297,8 @@ body {
 }
 
 #fileBtn {
-  padding: 10px 12px;
+  height: 44px;
+  padding: 0 14px;
   background: linear-gradient(135deg, #FF6B1A 0%, #D45500 100%);
   color: #FFD700;
   border: 2px solid rgba(255, 107, 26, 0.5);
@@ -303,6 +309,9 @@ body {
   box-shadow: 0 4px 12px rgba(255, 107, 26, 0.5), 0 0 20px rgba(255, 107, 26, 0.2);
   font-weight: 600;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #fileBtn:hover {
@@ -322,7 +331,8 @@ body {
 }
 
 #sendBtn {
-  padding: 10px 16px;
+  height: 44px;
+  padding: 0 18px;
   background: linear-gradient(135deg, #FF6B1A 0%, #9D4EDD 100%);
   color: #FFD700;
   border: 2px solid rgba(255, 215, 0, 0.5);
@@ -335,6 +345,9 @@ body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #sendBtn:hover {
