@@ -1,0 +1,22 @@
+{
+  "name": "clippy-resurrection",
+  "version": "2.0.0",
+  "description": "Clippy reimagined with modern AI for the modern era",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "keywords": ["clippy", "assistant", "desktop", "ai"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "@google/generative-ai": "^0.21.0",
+    "screenshot-desktop": "^1.15.0",
+    "dotenv": "^16.3.1"
+  }
+}
