@@ -1,0 +1,358 @@
+/* Halloween Theme - Spooky Pumpkin */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: transparent;
+  overflow: hidden;
+}
+
+.container {
+  background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+  border-radius: 20px;
+  padding: 15px;
+  width: 380px;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255,102,0,0.2), inset 0 0 60px rgba(138,43,226,0.1);
+  border: 2px solid rgba(255,102,0,0.4);
+  position: relative;
+}
+
+.container::before {
+  content: '🦇';
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  font-size: 16px;
+  animation: float-bat 3s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+.container::after {
+  content: '🕷️';
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  font-size: 12px;
+  animation: dangle 2s ease-in-out infinite;
+}
+
+@keyframes float-bat {
+  0%, 100% { transform: translate(0, 0) rotate(-5deg); }
+  50% { transform: translate(-10px, -8px) rotate(5deg); }
+}
+
+@keyframes dangle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  -webkit-app-region: drag;
+}
+
+.title {
+  color: #ff6600;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255,102,0,0.5), 0 2px 4px rgba(0,0,0,0.5);
+  letter-spacing: 1px;
+}
+
+.close-btn {
+  background: rgba(139,0,0,0.4);
+  border: 1px solid rgba(255,102,0,0.3);
+  color: #ff6600;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-app-region: no-drag;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(139,0,0,0.8);
+  box-shadow: 0 0 10px rgba(255,0,0,0.5);
+}
+
+.character-container {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0;
+  flex-shrink: 0;
+}
+
+.aduitor {
+  position: relative;
+  width: 100px;
+  height: 120px;
+  animation: spooky-bounce 2s ease-in-out infinite;
+}
+
+@keyframes spooky-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 65px;
+  height: 70px;
+  background: linear-grad180deg, #ff8c00 0%, #ff6600 50%, #cc5500 100%);
+  border-radius: 35px 35px 25px 25px;
+  border: 3px solid #8b4513;
+  box-shadow: inset -5px -5px 15px rgba(0,0,0,0.3), inset 5px 5px 15px rgba(255,200,100,0.2), 0 0 20px rgba(255,102,0,0.4);
+}
+
+.body::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 15px;
+  background: linear-gradient(90deg, #228b22 0%, #2e8b2e 50%, #1a6b1a 100%);
+  border-radius: 3px 3px 0 0;
+}
+
+.body::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;
+  height: 60px;
+  border-radius: 30px;
+  background: repeating-linear-gradient(90deg, transparent 0px, transparent 8px, rgba(0,0,0,0.1) 8px, rgba(0,0,0,0.1) 10px);
+}
+
+.eyes {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 2;
+}
+
+.eye {
+  width: 20px;
+  height: 24px;
+  background: #ffff00;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(255,255,0,0.8), 0 0 30px rgba(255,200,0,0.4);
+  animation: glow-eyes 1.5s ease-in-out infinite alternate;
+  border: none;
+}
+
+@keyframes glow-eyes {
+  0% { box-shadow: 0 0 10px rgba(255,255,0,0.6), 0 0 20px rgba(255,200,0,0.3); }
+  100% { box-shadow: 0 0 20px rgba(255,255,0,1), 0 0 40px rgba(255,200,0,0.6); }
+}
+
+.pupil { display: none; }
+.eyebrows { display: none; }
+
+.mouth {
+  position: absolute;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 25px;
+  height: 15px;
+  background: #ffff00;
+  clip-path: polygon(0% 0%, 20% 100%, 40% 0%, 60% 100%, 80% 0%, 100% 100%, 100% 0%);
+  z-index: 2;
+  box-shadow: 0 0 15px rgba(255,255,0,0.8);
+  animation: glow-eyes 1.5s ease-in-out infinite alternate;
+  border-radius: 0;
+}
+
+.arm {
+  position: absolute;
+  width: 10px;
+  height: 30px;
+  background: linear-gradient(180deg, #ff8c00 0%, #cc5500 100%);
+  border: 2px solid #8b4513;
+  border-radius: 5px;
+  bottom: 20px;
+}
+
+.left-arm {
+  left: 10px;
+  transform: rotate(20deg);
+}
+
+.right-arm {
+  right: 10px;
+  transform: rotate(-20deg);
+  transform-origin: top center;
+  animation: spooky-wave 1s ease-in-out infinite;
+}
+
+@keyframes spooky-wave {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(-50deg); }
+}
+
+.speech-bubble {
+  background: linear-gradient(135deg, #2a1a4a 0%, #1a0a2e 100%);
+  border: 2px solid rgba(255,102,0,0.3);
+  border-radius: 15px;
+  padding: 12px;
+  margin: 8px 0;
+  position: relative;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.3), inset 0 0 20px rgba(138,43,226,0.1);
+  flex: 1;
+  min-height: 60px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #2a1a4a;
+}
+
+#speech-text {
+  color: #e0d0ff;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 8px 0;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, rgba(255,102,0,0.2) 0%, rgba(139,0,139,0.2) 100%);
+  border: 1px solid rgba(255,102,0,0.4);
+  padding: 10px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffa500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.action-btn:hover {
+  background: linear-gradient(135deg, rgba(255,102,0,0.4) 0%, rgba(139,0,139,0.4) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255,102,0,0.3), 0 0 10px rgba(138,43,226,0.2);
+  border-color: rgba(255,102,0,0.6);
+}
+
+.chat-area {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+#user-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid rgba(255,102,0,0.3);
+  border-radius: 25px;
+  font-size: 14px;
+  outline: none;
+  background: rgba(26,10,46,0.8);
+  color: #e0d0ff;
+  transition: all 0.2s;
+}
+
+#user-input::placeholder { color: rgba(224,208,255,0.5); }
+#user-input:focus {
+  border-color: rgba(255,102,0,0.6);
+  box-shadow: 0 0 10px rgba(255,102,0,0.2);
+}
+
+.send-btn {
+  background: linear-gradient(135deg, #ff6600 0%, #cc3300 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 10px rgba(255,102,0,0.3);
+}
+
+.send-btn:hover {
+  background: linear-gradient(135deg, #ff8800 0%, #ff4400 100%);
+  box-shadow: 0 4px 15px rgba(255,102,0,0.5);
+  transform: translateY(-1px);
+}
+
+.aduitor.thinking .right-arm { animation: scratch 0.5s ease-in-out infinite; }
+@keyframes scratch {
+  0%, 100% { transform: rotate(-20deg) translateY(0); }
+  50% { transform: rotate(-30deg) translateY(-5px); }
+}
+
+.aduitor.excited { animation: spooky-jump 0.3s ease-in-out infinite; }
+@keyframes spooky-jump {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.aduitor.happy .mouth { height: 18px; }
+
+#speech-text strong { font-weight: 600; color: #ffa500; }
+#speech-text em { font-style: italic; color: #ff8c00; }
+#speech-text code {
+  background: rgba(255,102,0,0.2);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 12px;
+  color: #ffcc00;
+  border: 1px solid rgba(255,102,0,0.3);
+}
+
+.speech-bubble::-webkit-scrollbar { width: 6px; }
+.speech-bubble::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 3px; }
+.speech-bubble::-webkit-scrollbar-thumb { background: rgba(255,102,0,0.4); border-radius: 3px; }
+.speech-bubble::-webkit-scrollbar-thumb:hover { background: rgba(255,102,0,0.6); }
+

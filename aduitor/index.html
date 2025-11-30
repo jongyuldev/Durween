@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aduitor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="themes/default.css" id="theme-stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="title" id="app-title">Aduitor</span>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <div class="theme-selector">
+          <button class="theme-btn" onclick="toggleThemeDropdown()" title="Change Theme">🎨</button>
+          <div class="theme-dropdown" id="theme-dropdown">
+            <div class="theme-option" data-theme="default" onclick="setTheme('default')">✨ Default</div>
+            <div class="theme-option" data-theme="halloween" onclick="setTheme('halloween')">🎃 Halloween</div>
+            <div class="theme-option" data-theme="christmas" onclick="setTheme('christmas')">🎄 Christmas</div>
+            <div class="theme-option" data-theme="valentine" onclick="setTheme('valentine')">💕 Valentine</div>
+            <div class="theme-option" data-theme="birthday" onclick="setTheme('birthday')">🎂 Birthday</div>
+          </div>
+        </div>
+        <button class="close-btn" onclick="hideWindow()">×</button>
+      </div>
+    </div>
+    
+    <div class="character-container">
+      <div class="aduitor" id="aduitor">
+        <div class="eyes">
+          <div class="eye left-eye"><div class="pupil"></div></div>
+          <div class="eye right-eye"><div class="pupil"></div></div>
+        </div>
+        <div class="eyebrows">
+          <div class="eyebrow left-eyebrow"></div>
+          <div class="eyebrow right-eyebrow"></div>
+        </div>
+        <div class="mouth" id="mouth"></div>
+        <div class="body"></div>
+        <div class="arm left-arm"></div>
+        <div class="arm right-arm" id="right-arm"></div>
+      </div>
+    </div>
+
+    <div class="speech-bubble" id="speech-bubble">
+      <p id="speech-text">Hey there! I'm Aduitor, your helpful buddy! 🎉</p>
+    </div>
+
+    <div class="quick-actions" id="quick-actions"></div>
+
+    <div class="chat-area">
+      <input type="text" id="user-input" placeholder="Ask a question!" onkeypress="handleKeyPress(event)">
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">Ask</button>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

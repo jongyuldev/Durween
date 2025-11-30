@@ -1,0 +1,33 @@
+{
+  "name": "aduitor",
+  "version": "1.0.0",
+  "description": "A friendly desktop assistant for users unfamiliar with technology",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": ["assistant", "helper", "desktop"],
+  "author": "Aduitor Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.aduitor.app",
+    "productName": "Aduitor",
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
