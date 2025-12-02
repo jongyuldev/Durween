@@ -2,6 +2,9 @@
 require('dotenv').config();
 
 const { app, BrowserWindow, ipcMain, screen, globalShortcut, Tray, Menu, nativeImage } = require('electron');
+
+// GPU configuration - Disabled due to compatibility issues with dual GPU setup
+app.disableHardwareAcceleration();
 const path = require('path');
 const config = require('./config');
 const contextAnalyzer = require('./contextAnalyzer');
@@ -131,12 +134,15 @@ function registerHotkeys() {
 
 app.whenReady().then(() => {
   // Initialize AI engine with API key
-  const apiKey = config.get('geminiApiKey');
+  // ALWAYS load from .env file as source of truth
+  const apiKey = process.env.GEMINI_API_KEY;
+  
   if (apiKey) {
-    console.log('Initializing AI engine with Gemini API key...');
+    console.log('Initializing AI engine with Gemini API key from .env');
+    console.log('Key starts with:', apiKey.substring(0, 20) + '...');
     aiEngine.setApiKey(apiKey);
   } else {
-    console.log('No API key found, using fallback responses');
+    console.log('No API key found in .env file, using fallback responses');
   }
 
   createClippyWindow();
