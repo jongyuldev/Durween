@@ -1,60 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aduitor</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="themes/default.css" id="theme-stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aduitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              paper: '#ffffe0',
+              'paper-border': '#f0e68c',
+              'win-gray': '#c0c0c0',
+              'win-blue': '#000080',
+            },
+            animation: {
+              'bounce-gentle': 'bounce-gentle 2s infinite',
+              'blink': 'blink 4s infinite',
+            },
+            keyframes: {
+              'bounce-gentle': {
+                '0%, 100%': { transform: 'translateY(-2px)' },
+                '50%': { transform: 'translateY(2px)' },
+              },
+              'blink': {
+                '0%, 96%, 98%': { transform: 'scaleY(1)' },
+                '97%': { transform: 'scaleY(0.1)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #2c5f2d; /* Classic desktop green */
+        background-image: 
+          linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+          linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+        background-size: 60px 60px;
+        background-position: 0 0, 30px 30px;
+        background-color: #3b8686; /* Modern teal fallback */
+        overflow: hidden;
+      }
+      /* Custom Scrollbar for chat */
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      /* Particle Effects */
+      .particle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        animation: particle-explode 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 50;
+      }
+      @keyframes particle-explode {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0); opacity: 0; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "d3": "https://aistudiocdn.com/d3@^7.9.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1"
+  }
+}
+</script>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <span class="title" id="app-title">Aduitor</span>
-      <div style="display: flex; gap: 8px; align-items: center;">
-        <div class="theme-selector">
-          <button class="theme-btn" onclick="toggleThemeDropdown()" title="Change Theme">🎨</button>
-          <div class="theme-dropdown" id="theme-dropdown">
-            <div class="theme-option" data-theme="default" onclick="setTheme('default')">✨ Default</div>
-            <div class="theme-option" data-theme="halloween" onclick="setTheme('halloween')">🎃 Halloween</div>
-            <div class="theme-option" data-theme="christmas" onclick="setTheme('christmas')">🎄 Christmas</div>
-            <div class="theme-option" data-theme="valentine" onclick="setTheme('valentine')">💕 Valentine</div>
-            <div class="theme-option" data-theme="birthday" onclick="setTheme('birthday')">🎂 Birthday</div>
-          </div>
-        </div>
-        <button class="close-btn" onclick="hideWindow()">×</button>
-      </div>
-    </div>
-    
-    <div class="character-container">
-      <div class="aduitor" id="aduitor">
-        <div class="eyes">
-          <div class="eye left-eye"><div class="pupil"></div></div>
-          <div class="eye right-eye"><div class="pupil"></div></div>
-        </div>
-        <div class="eyebrows">
-          <div class="eyebrow left-eyebrow"></div>
-          <div class="eyebrow right-eyebrow"></div>
-        </div>
-        <div class="mouth" id="mouth"></div>
-        <div class="body"></div>
-        <div class="arm left-arm"></div>
-        <div class="arm right-arm" id="right-arm"></div>
-      </div>
-    </div>
-
-    <div class="speech-bubble" id="speech-bubble">
-      <p id="speech-text">Hey there! I'm Aduitor, your helpful buddy! 🎉</p>
-    </div>
-
-    <div class="quick-actions" id="quick-actions"></div>
-
-    <div class="chat-area">
-      <input type="text" id="user-input" placeholder="Ask a question!" onkeypress="handleKeyPress(event)">
-      <button class="send-btn" id="send-btn" onclick="sendMessage()">Ask</button>
-    </div>
-  </div>
-
-  <script src="renderer.js"></script>
-</body>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
