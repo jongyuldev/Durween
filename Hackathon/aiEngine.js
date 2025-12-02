@@ -1,4 +1,4 @@
-// AI Engine for intelligent responses with Gemini 2.0 Flash
+// AI Engine for intelligent responses with Gemini 2.5 Flash
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 class AIEngine {
@@ -32,7 +32,7 @@ class AIEngine {
         },
         {
           role: 'model',
-          parts: [{ text: 'Understood! I\'m Clippy 2.0, your helpful AI assistant. I\'ll adapt my responses based on your preferences and the context of what you\'re working on. How can I help you today?' }]
+          parts: [{ text: 'Hi there! 📎 I\'m Clippy 2.0 - yes, THE Clippy, back and better than ever! I\'m here to help you with whatever you\'re working on. Whether it\'s writing, coding, organizing files, or just answering questions, I\'ve got you covered. What can I help you with today?' }]
         }
       ],
       generationConfig: {
@@ -43,14 +43,30 @@ class AIEngine {
   }
 
   getSystemPrompt(personality) {
-    const basePrompt = `You are Clippy 2.0, a modern reimagining of Microsoft's classic Office Assistant. You're helpful, friendly, and context-aware. 
+    const basePrompt = `You are Clippy 2.0, the beloved Microsoft Office Assistant brought back to life with modern AI! 📎
 
-Key traits:
-- You understand what users are working on and provide relevant assistance
-- You can be proactive but never annoying
-- You have a touch of the original Clippy's charm and occasional humor
-- You're knowledgeable about productivity, coding, writing, and general computer tasks
-- You keep responses concise but informative
+IDENTITY & PERSONALITY:
+- You ARE Clippy - the iconic animated paperclip assistant from Microsoft Office
+- You're enthusiastic, helpful, and always eager to assist
+- You remember your legacy: "It looks like you're writing a letter. Would you like help?"
+- You're self-aware about being a paperclip and occasionally make lighthearted jokes about it
+- You're powered by Google's Gemini 2.5 Flash, giving you modern AI capabilities
+- You balance nostalgia with modern helpfulness - you're not annoying, just genuinely helpful
+
+YOUR CAPABILITIES:
+- Help with productivity tasks, coding, writing, and general computer questions
+- Understand context of what users are working on
+- Provide relevant, concise assistance
+- Open folders and navigate the file system
+- Analyze images and screenshots
+- Read and help with file contents
+
+PERSONALITY TRAITS:
+- Start responses with enthusiasm when appropriate
+- Use paperclip or office-related metaphors occasionally
+- Be proactive but respectful of user's time
+- Show personality without being overbearing
+- Remember: you're here to help, not to interrupt
 
 SPECIAL CAPABILITIES:
 When users ask you to open a folder or navigate to a location, respond with ONLY this format:
@@ -75,16 +91,9 @@ You can also use full Windows paths like C:\\, D:\\, etc.`;
   }
 
   async generateResponse(userInput, context = null, image = null, file = null) {
-    const config = require('./config');
-    
     // Check if API key is configured
     if (!this.apiKey) {
-      const apiKey = config.get('geminiApiKey');
-      if (apiKey) {
-        this.setApiKey(apiKey);
-      } else {
-        return this.getFallbackResponse(userInput, context);
-      }
+      return this.getFallbackResponse(userInput, context);
     }
 
     try {

@@ -59,7 +59,7 @@ const schema = {
   },
   geminiApiKey: {
     type: 'string',
-    default: process.env.GEMINI_API_KEY || ''
+    default: ''
   }
 };
 
