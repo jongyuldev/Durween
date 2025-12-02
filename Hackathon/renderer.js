@@ -2,17 +2,32 @@ const { ipcRenderer } = require('electron');
 
 const speechBubble = document.getElementById('speechBubble');
 const bubbleContent = document.getElementById('bubbleContent');
-const inputContainer = document.getElementById('inputContainer');
 const userInput = document.getElementById('userInput');
-const sendBtn = document.getElementById('sendBtn');
-const chatBtn = document.getElementById('chatBtn');
 const minimizeBtn = document.getElementById('minimizeBtn');
 const closeBtn = document.getElementById('closeBtn');
 const settingsBtn = document.getElementById('settingsBtn');
-const clearBtn = document.getElementById('clearBtn');
+const toggleBubbleBtn = document.getElementById('toggleBubbleBtn');
 const screenshotBtn = document.getElementById('screenshotBtn');
 const fileBtn = document.getElementById('fileBtn');
 const fileInput = document.getElementById('fileInput');
+const ghostContainer = document.getElementById('ghostContainer');
+const controls = document.querySelector('.controls');
+
+// Debug: Log which elements were found
+console.log('Elements found:', {
+  speechBubble: !!speechBubble,
+  bubbleContent: !!bubbleContent,
+  userInput: !!userInput,
+  minimizeBtn: !!minimizeBtn,
+  closeBtn: !!closeBtn,
+  settingsBtn: !!settingsBtn,
+  toggleBubbleBtn: !!toggleBubbleBtn,
+  screenshotBtn: !!screenshotBtn,
+  fileBtn: !!fileBtn,
+  fileInput: !!fileInput,
+  ghostContainer: !!ghostContainer,
+  controls: !!controls
+});
 
 let currentConfig = {};
 let currentContext = null;
@@ -84,7 +99,8 @@ function updateSpeechBubble(text, addToHistory = true) {
     .replace(/\n/g, '<br>');
   
   bubbleContent.innerHTML = escapedText;
-  speechBubble.style.animation = 'none';
+  speechBubble.classList.add('show');
+  console.log('Speech bubble should now be visible');
   
   if (addToHistory) {
     messageHistory.push({
@@ -93,11 +109,16 @@ function updateSpeechBubble(text, addToHistory = true) {
     });
   }
   
-  setTimeout(() => {
-    speechBubble.style.animation = 'fadeIn 0.5s';
-    // Scroll to bottom to show latest content
-    speechBubble.scrollTop = speechBubble.scrollHeight;
-  }, 10);
+  // Clear any existing timeout
+  if (window.bubbleTimeout) {
+    clearTimeout(window.bubbleTimeout);
+  }
+  
+  // Auto-hide after 60 seconds (or keep visible longer)
+  window.bubbleTimeout = setTimeout(() => {
+    speechBubble.classList.remove('show');
+    console.log('Speech bubble hidden');
+  }, 60000);
 }
 
 function getResponse(input) {
@@ -189,45 +210,63 @@ async function handleUserInput() {
   }
 }
 
-chatBtn.addEventListener('click', () => {
-  const isVisible = inputContainer.style.display !== 'none';
-  inputContainer.style.display = isVisible ? 'none' : 'flex';
-  if (!isVisible) {
-    userInput.focus();
-  }
-});
+// Input is always visible now, no chat button needed
 
-sendBtn.addEventListener('click', handleUserInput);
+if (userInput) {
+  userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      console.log('Enter key pressed, sending message...');
+      handleUserInput();
+    }
+  });
+  console.log('Enter key listener added to input');
+} else {
+  console.error('User input element not found!');
+}
 
-userInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    handleUserInput();
-  }
-});
+if (minimizeBtn) {
+  minimizeBtn.addEventListener('click', () => {
+    console.log('Minimize button clicked!');
+    updateSpeechBubble("I'll be back in 30 seconds! 👋");
+    setTimeout(() => {
+      ipcRenderer.send('minimize-clippy');
+    }, 1000);
+  });
+} else {
+  console.error('Minimize button not found!');
+}
 
-minimizeBtn.addEventListener('click', () => {
-  updateSpeechBubble("I'll be back in 30 seconds! 👋");
-  setTimeout(() => {
-    ipcRenderer.send('minimize-clippy');
-  }, 1000);
-});
+if (closeBtn) {
+  closeBtn.addEventListener('click', () => {
+    console.log('Close button clicked!');
+    updateSpeechBubble("Goodbye! See you next time! 👋");
+    setTimeout(() => {
+      ipcRenderer.send('close-clippy');
+    }, 1000);
+  });
+} else {
+  console.error('Close button not found!');
+}
 
-closeBtn.addEventListener('click', () => {
-  updateSpeechBubble("Goodbye! See you next time! 👋");
-  setTimeout(() => {
-    ipcRenderer.send('close-clippy');
-  }, 1000);
-});
+if (toggleBubbleBtn) {
+  toggleBubbleBtn.addEventListener('click', () => {
+    console.log('Toggle bubble button clicked!');
+    speechBubble.classList.toggle('show');
+  });
+} else {
+  console.error('Toggle bubble button not found!');
+}
 
-settingsBtn.addEventListener('click', () => {
-  ipcRenderer.send('open-settings');
-});
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', () => {
+    console.log('Settings button clicked!');
+    ipcRenderer.send('open-settings');
+  });
+} else {
+  console.error('Settings button not found!');
+}
 
-clearBtn.addEventListener('click', () => {
-  console.log('Clear button clicked');
-  updateSpeechBubble('Message cleared. Ask me anything! 💬', false);
-  messageHistory = [];
-});
+// Clear button removed from new design
 
 // Test function - remove after debugging
 window.testBubble = () => {
@@ -235,10 +274,12 @@ window.testBubble = () => {
   updateSpeechBubble('Test message! If you see this, the bubble works! 🎉');
 };
 
-screenshotBtn.addEventListener('click', async () => {
-  try {
-    updateSpeechBubble('Taking screenshot... 📸', false);
-    screenshotBtn.disabled = true;
+if (screenshotBtn) {
+  screenshotBtn.addEventListener('click', async () => {
+    console.log('Screenshot button clicked!');
+    try {
+      updateSpeechBubble('Taking screenshot... 📸', false);
+      screenshotBtn.disabled = true;
     
     const screenshot = await ipcRenderer.invoke('take-screenshot');
     
@@ -258,13 +299,21 @@ screenshotBtn.addEventListener('click', async () => {
     console.error('Screenshot error:', error);
     updateSpeechBubble('Sorry, failed to take screenshot: ' + error.message, false);
   } finally {
-    screenshotBtn.disabled = false;
-  }
-});
+      screenshotBtn.disabled = false;
+    }
+  });
+} else {
+  console.error('Screenshot button not found!');
+}
 
-fileBtn.addEventListener('click', () => {
-  fileInput.click();
-});
+if (fileBtn) {
+  fileBtn.addEventListener('click', () => {
+    console.log('File button clicked!');
+    fileInput.click();
+  });
+} else {
+  console.error('File button not found!');
+}
 
 fileInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
@@ -422,12 +471,15 @@ setTimeout(async () => {
 }, 2000);
 
 
-// Ensure scrolling works properly in speech bubble
-speechBubble.addEventListener('wheel', (e) => {
-  e.stopPropagation();
-}, { passive: true });
+// Speech bubble is non-interactive now
 
-// Prevent drag on scrollable areas
-speechBubble.addEventListener('mousedown', (e) => {
-  e.stopPropagation();
-});
+// Toggle controls when clicking ghost
+if (ghostContainer && controls) {
+  ghostContainer.addEventListener('click', () => {
+    console.log('Ghost clicked!');
+    controls.classList.toggle('show');
+  });
+  console.log('Ghost click listener added');
+} else {
+  console.error('Ghost container or controls not found!');
+}
