@@ -180,6 +180,8 @@ ipcMain.on('minimize-clippy', () => {
   setTimeout(() => {
     if (config.get('intrusionLevel') !== 'off') {
       clippyWindow.show();
+      // Send the "BOO! I'm back" message when reappearing
+      clippyWindow.webContents.send('show-boo-message');
     }
   }, 30000);
 });

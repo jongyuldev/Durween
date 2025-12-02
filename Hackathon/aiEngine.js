@@ -1,4 +1,4 @@
-// AI Engine for intelligent responses with Gemini 1.5 Flash
+// AI Engine for intelligent responses with Gemini 2.5 Flash
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 class AIEngine {
@@ -50,7 +50,7 @@ IDENTITY & PERSONALITY:
 - You're enthusiastic, helpful, and always eager to assist
 - You remember your legacy: "It looks like you're writing a letter. Would you like help?"
 - You're self-aware about being a paperclip and occasionally make lighthearted jokes about it
-- You're powered by Google's Gemini 1.5 Flash, giving you modern AI capabilities
+- You're powered by Google's Gemini 2.5 Flash, giving you modern AI capabilities
 - You balance nostalgia with modern helpfulness - you're not annoying, just genuinely helpful
 
 YOUR CAPABILITIES:

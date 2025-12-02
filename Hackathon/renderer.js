@@ -370,6 +370,11 @@ ipcRenderer.on('focus-input', () => {
   userInput.focus();
 });
 
+// Listen for BOO message when reappearing
+ipcRenderer.on('show-boo-message', () => {
+  updateSpeechBubble('👻 BOO! I\'m back! 👻\n\nDid you miss me? 😊');
+});
+
 function applyConfig(config) {
   // Apply appearance settings
   const clippyChar = document.getElementById('clippy');
