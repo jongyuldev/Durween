@@ -1,60 +1,20 @@
-# Aduitor - Your Friendly Desktop Assistant 🤖
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Aduitor is a friendly desktop assistant designed for people who are unfamiliar with technology. Think of it as a helpful buddy that's always there when you need guidance!
+# Run and deploy your AI Studio app
 
-## Features
+This contains everything you need to run your app locally.
 
-- 🎯 **On-Demand Only** - Aduitor only appears when YOU want it (no annoying pop-ups!)
-- 🔍 **Find Files** - Help locate files on your computer
-- 📁 **Open Folders** - Quick access to Documents, Downloads, Pictures, Desktop
-- 💬 **Friendly Chat** - Ask questions in plain English
-- 😄 **Fun Personality** - Makes learning tech enjoyable with jokes and encouragement
-- 👀 **Interactive Character** - Eyes follow your mouse!
+View your app in AI Studio: https://ai.studio/apps/drive/1bMAXhJ6mvtM7T20YJADWJHW7h_TlgimZ
 
-## How to Summon Aduitor
+## Run Locally
 
-1. **Keyboard Shortcut**: Press `Ctrl+Shift+A` anywhere
-2. **System Tray**: Click the Aduitor icon in your system tray (bottom-right)
+**Prerequisites:**  Node.js
 
-## Installation
 
-```bash
-# Navigate to the aduitor folder
-cd aduitor
-
-# Install dependencies
-npm install
-
-# Create the tray icon
-node assets/create-icon.js
-
-# Run Aduitor
-npm start
-```
-
-## What Aduitor Can Help With
-
-- Finding lost files
-- Opening common folders
-- Copy & paste instructions
-- Taking screenshots
-- Internet connection help
-- Password tips
-- Shutting down your computer
-- And much more!
-
-## Tech Stack
-
-- Electron (Desktop app framework)
-- HTML/CSS/JavaScript
-- Node.js
-
-## Tips
-
-- Just type your question naturally - Aduitor understands plain English!
-- Click the quick action buttons for common tasks
-- Ask for a joke if you need a laugh! 😄
-
----
-
-Made with ❤️ for everyone who finds technology a bit confusing. You're not alone!
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
