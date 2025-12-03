@@ -3,93 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clippy 2.0</title>
+  <title>Ghost Assistant</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="clippy-container">
-    <div class="clippy-character" id="clippy">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="ghostGlow" cx="50%" cy="40%">
-            <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.95" />
-            <stop offset="70%" style="stop-color:#E8F4F8;stop-opacity:0.9" />
-            <stop offset="100%" style="stop-color:#D0E8F0;stop-opacity:0.85" />
-          </radialGradient>
-          <filter id="ghostShadow">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-            <feOffset dx="0" dy="3" result="offsetblur"/>
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.3"/>
-            </feComponentTransfer>
-            <feMerge>
-              <feMergeNode/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-        
-        <!-- Ghost body - rounded top -->
-        <ellipse cx="60" cy="50" rx="38" ry="42" fill="url(#ghostGlow)" class="ghost-body" filter="url(#ghostShadow)"/>
-        
-        <!-- Ghost wavy bottom -->
-        <path d="M 22 80 Q 22 90 22 95 Q 28 100 34 95 Q 40 90 46 95 Q 52 100 60 95 Q 68 90 74 95 Q 80 100 86 95 Q 92 90 98 95 Q 98 90 98 80 Z" 
-              fill="url(#ghostGlow)" filter="url(#ghostShadow)"/>
-        
-        <!-- Subtle fabric texture lines -->
-        <path d="M 30 45 Q 60 43 90 45" stroke="#D0E8F0" stroke-width="1" fill="none" opacity="0.3"/>
-        <path d="M 28 60 Q 60 58 92 60" stroke="#D0E8F0" stroke-width="1" fill="none" opacity="0.3"/>
-        <path d="M 26 75 Q 60 73 94 75" stroke="#D0E8F0" stroke-width="1" fill="none" opacity="0.3"/>
-        
-        <!-- Highlight on ghost -->
-        <ellipse cx="42" cy="40" rx="18" ry="22" fill="#FFFFFF" opacity="0.5"/>
-        
-        <!-- Cute oval eyes -->
-        <ellipse cx="45" cy="55" rx="8" ry="11" fill="#4A5568"/>
-        <ellipse cx="75" cy="55" rx="8" ry="11" fill="#4A5568"/>
-        
-        <!-- Eye highlights for sparkle -->
-        <ellipse cx="47" cy="52" rx="3" ry="4" fill="#FFFFFF" opacity="0.8"/>
-        <ellipse cx="77" cy="52" rx="3" ry="4" fill="#FFFFFF" opacity="0.8"/>
-        
-        <!-- Friendly smile -->
-        <path d="M 45 73 Q 60 80 75 73" stroke="#4A5568" stroke-width="3" fill="none" stroke-linecap="round"/>
-        
-        <!-- Floating particles around ghost -->
-        <circle cx="15" cy="45" r="2.5" fill="#B0D8E8" class="particle particle-1" opacity="0.7"/>
-        <circle cx="105" cy="50" r="2.5" fill="#B0D8E8" class="particle particle-2" opacity="0.7"/>
-        <circle cx="20" cy="85" r="2" fill="#B0D8E8" class="particle particle-3" opacity="0.6"/>
-        <circle cx="100" cy="80" r="2" fill="#B0D8E8" class="particle particle-1" opacity="0.6"/>
-        <circle cx="10" cy="65" r="1.5" fill="#D0E8F0" class="particle particle-2" opacity="0.5"/>
-        <circle cx="110" cy="70" r="1.5" fill="#D0E8F0" class="particle particle-3" opacity="0.5"/>
-      </svg>
-    </div>
-    
-    <div class="speech-bubble" id="speechBubble">
-      <div class="bubble-header">
-        <button class="clear-btn" id="clearBtn" title="Clear message">✖</button>
-      </div>
-      <div class="bubble-content" id="bubbleContent">
-        Hi! I'm Clippy 2.0! 👋<br>
-        How can I help you today?
-      </div>
-      <div class="bubble-tail"></div>
-    </div>
+  <!-- Ghost character on the right -->
+  <div class="ghost-container" id="ghostContainer">
+    <svg class="ghost-svg" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ghostBody" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#E8E4F3;stop-opacity:1" />
+        </linearGradient>
+        <filter id="ghostGlow">
+          <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      <!-- Ghost body -->
+      <path d="M 60 20 
+               C 35 20, 20 35, 20 60
+               L 20 110
+               Q 20 115, 25 118
+               Q 30 115, 35 118
+               Q 40 115, 45 118
+               Q 50 115, 55 118
+               Q 60 115, 65 118
+               Q 70 115, 75 118
+               Q 80 115, 85 118
+               Q 90 115, 95 118
+               Q 100 115, 100 110
+               L 100 60
+               C 100 35, 85 20, 60 20 Z" 
+            fill="url(#ghostBody)" 
+            filter="url(#ghostGlow)"
+            class="ghost-body"/>
+      
+      <!-- Left eye -->
+      <ellipse cx="45" cy="60" rx="8" ry="12" fill="#2D3748" class="ghost-eye"/>
+      
+      <!-- Right eye -->
+      <ellipse cx="75" cy="60" rx="8" ry="12" fill="#2D3748" class="ghost-eye"/>
+      
+      <!-- Blush -->
+      <ellipse cx="30" cy="75" rx="8" ry="6" fill="#FFB6C1" opacity="0.6"/>
+      <ellipse cx="90" cy="75" rx="8" ry="6" fill="#FFB6C1" opacity="0.6"/>
+      
+      <!-- Smile -->
+      <path d="M 45 85 Q 60 90 75 85" stroke="#2D3748" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  
+  <!-- Speech bubble -->
+  <div class="speech-bubble" id="speechBubble">
+    <div class="bubble-content" id="bubbleContent">Ask me anything...</div>
+    <div class="bubble-tail"></div>
+  </div>
 
-    <div class="input-container" id="inputContainer" style="display: none;">
-      <input type="text" id="userInput" placeholder="Ask me anything..." aria-label="Chat input">
-      <input type="file" id="fileInput" style="display: none;" aria-label="Upload file">
-      <button id="screenshotBtn" title="Take screenshot & analyze" aria-label="Screenshot">📸</button>
-      <button id="fileBtn" title="Attach file or image" aria-label="Attach file">📎</button>
-      <button id="sendBtn" aria-label="Send message">Send</button>
+  <!-- Input area at bottom center -->
+  <div class="input-area">
+    <div class="input-box">
+      <input type="text" id="userInput" placeholder="Ask me anything..." />
+      <input type="file" id="fileInput" style="display: none;" />
     </div>
+    <div class="button-row">
+      <button class="action-btn" id="screenshotBtn" title="Take screenshot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+      </button>
+      <button class="action-btn" id="fileBtn" title="Attach file">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
 
-    <div class="controls">
-      <button class="control-btn" id="chatBtn" title="Chat with me">💬</button>
-      <button class="control-btn" id="settingsBtn" title="Settings">⚙️</button>
-      <button class="control-btn" id="minimizeBtn" title="Minimize">➖</button>
-      <button class="control-btn" id="closeBtn" title="Close">✖</button>
-    </div>
+  <!-- Control buttons -->
+  <div class="controls">
+    <button class="control-btn" id="toggleBubbleBtn" title="Show/Hide Speech Bubble">💬</button>
+    <button class="control-btn" id="settingsBtn" title="Settings">⚙️</button>
+    <button class="control-btn" id="minimizeBtn" title="Minimize">➖</button>
+    <button class="control-btn" id="closeBtn" title="Close">✖</button>
   </div>
 
   <script src="renderer.js"></script>
