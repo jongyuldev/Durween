@@ -1,60 +1,84 @@
-# Aduitor - Your Friendly Desktop Assistant 🤖
+# Aduitor - Your AI Desktop Companion
 
-Aduitor is a friendly desktop assistant designed for people who are unfamiliar with technology. Think of it as a helpful buddy that's always there when you need guidance!
+Aduitor is a charming, retro-styled desktop assistant powered by Google's Gemini API. It lives on your screen as a friendly "Ghost" character, ready to help you manage tasks, answer questions, generate images, and more.
 
-## Features
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-- 🎯 **On-Demand Only** - Aduitor only appears when YOU want it (no annoying pop-ups!)
-- 🔍 **Find Files** - Help locate files on your computer
-- 📁 **Open Folders** - Quick access to Documents, Downloads, Pictures, Desktop
-- 💬 **Friendly Chat** - Ask questions in plain English
-- 😄 **Fun Personality** - Makes learning tech enjoyable with jokes and encouragement
-- 👀 **Interactive Character** - Eyes follow your mouse!
+## ✨ Features
 
-## How to Summon Aduitor
+*   **👻 Interactive Ghost Companion:** A floating, draggable character that acts as your interface.
+*   **💬 Intelligent Chat:** Powered by Gemini 2.5 Flash, capable of natural conversation and "thinking" modes for complex queries.
+*   **✅ Task Management:**
+    *   Add tasks via natural language (e.g., "Remind me to call Mom tomorrow at 5 PM").
+    *   Organize with categories, priorities, and tags.
+    *   Track your productivity with streaks and stats.
+*   **🎨 Creative Tools:**
+    *   **Image Generation:** Create images directly from the chat interface.
+    *   **Vision Analysis:** Drag and drop images or videos for AI analysis.
+*   **🎙️ Voice Interaction:** Speak to Aduitor using the built-in microphone with real-time audio visualization.
+*   **🌍 Grounded Knowledge:** Integrated with Google Search and Maps for up-to-date information.
+*   **🔔 Proactive Assistance:** Aduitor monitors your progress and offers timely nudges or encouragement.
 
-1. **Keyboard Shortcut**: Press `Ctrl+Shift+A` anywhere
-2. **System Tray**: Click the Aduitor icon in your system tray (bottom-right)
+## 🛠️ Tech Stack
 
-## Installation
+*   **Framework:** [Electron](https://www.electronjs.org/) & [React](https://react.dev/)
+*   **Build Tool:** [Vite](https://vitejs.dev/)
+*   **Language:** TypeScript
+*   **AI Model:** [Google Gemini API](https://ai.google.dev/) (`@google/genai`)
+*   **Styling:** Tailwind CSS & Lucide Icons
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+*   Node.js installed on your machine.
+*   A Google Gemini API Key. You can get one [here](https://aistudio.google.com/app/apikey).
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/jongyuldev/Durween.git
+    cd Durween/aduitor
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Configure Environment Variables:
+    *   Create a `.env` file in the root of the `aduitor` directory.
+    *   Add your API key:
+        ```env
+        API_KEY=your_gemini_api_key_here
+        ```
+
+### Running the App
+
+To start the application in development mode (with hot-reload):
 
 ```bash
-# Navigate to the aduitor folder
-cd aduitor
-
-# Install dependencies
-npm install
-
-# Create the tray icon
-node assets/create-icon.js
-
-# Run Aduitor
-npm start
+npm run dev
 ```
 
-## What Aduitor Can Help With
+This will launch both the Vite dev server and the Electron window.
 
-- Finding lost files
-- Opening common folders
-- Copy & paste instructions
-- Taking screenshots
-- Internet connection help
-- Password tips
-- Shutting down your computer
-- And much more!
+To build for production:
 
-## Tech Stack
+```bash
+npm run electron:build
+```
 
-- Electron (Desktop app framework)
-- HTML/CSS/JavaScript
-- Node.js
+## 🎮 Usage
 
-## Tips
+*   **Drag:** Click and hold anywhere on the character to move it around your screen.
+*   **Chat:** Type or speak to interact. Use the mode selector to switch between Chat, Search, Maps, Image Gen, etc.
+*   **Tasks:** Open the task list to view your to-dos. You can also ask Aduitor to "add a task" directly.
+*   **Stats:** Check the stats board to see your daily streaks and completion rates.
 
-- Just type your question naturally - Aduitor understands plain English!
-- Click the quick action buttons for common tasks
-- Ask for a joke if you need a laugh! 😄
+## 📄 License
 
----
-
-Made with ❤️ for everyone who finds technology a bit confusing. You're not alone!
+This project is licensed under the MIT License.
