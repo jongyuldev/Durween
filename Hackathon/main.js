@@ -138,8 +138,8 @@ app.whenReady().then(() => {
   const apiKey = process.env.GEMINI_API_KEY;
   
   if (apiKey) {
-    console.log('Initializing AI engine with Gemini API key from .env');
-    console.log('Key starts with:', apiKey.substring(0, 20) + '...');
+    console.log('Gemini API key loaded from .env');
+    // Do not log any part of the API key
     aiEngine.setApiKey(apiKey);
   } else {
     console.log('No API key found in .env file, using fallback responses');
