@@ -1100,8 +1100,7 @@ export default function App() {
                                         }
 
                                         setSelectedMode(m.mode);
-                                        if (m.mode === AIModelMode.ImageGen) setShowImgSettings(true);
-                                        else setShowImgSettings(false);
+                                        setShowImgSettings(false);
                                     }}
                                     className={`flex-shrink-0 flex items-center gap-1 px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors border ${selectedMode === m.mode
                                         ? 'bg-blue-500/10 border-blue-500 text-blue-500'
