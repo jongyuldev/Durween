@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aduitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              paper: '#ffffe0',
+              'paper-border': '#f0e68c',
+              'win-gray': '#c0c0c0',
+              'win-blue': '#000080',
+            },
+            animation: {
+              'bounce-gentle': 'bounce-gentle 2s infinite',
+              'blink': 'blink 4s infinite',
+            },
+            keyframes: {
+              'bounce-gentle': {
+                '0%, 100%': { transform: 'translateY(-2px)' },
+                '50%': { transform: 'translateY(2px)' },
+              },
+              'blink': {
+                '0%, 96%, 98%': { transform: 'scaleY(1)' },
+                '97%': { transform: 'scaleY(0.1)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background: transparent;
+        overflow: hidden;
+      }
+      /* Custom Scrollbar for chat */
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      /* Particle Effects */
+      .particle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        animation: particle-explode 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 50;
+      }
+      @keyframes particle-explode {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0); opacity: 0; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "d3": "https://aistudiocdn.com/d3@^7.9.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
