@@ -25,9 +25,9 @@ const createWindow = () => {
         skipTaskbar: false, // Keep it in taskbar for now so user can find it
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false,
-            webSecurity: false // Allow loading local resources if needed
+            contextIsolation: false
         },
+
     });
 
     // Load the index.html of the app.
