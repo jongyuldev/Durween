@@ -59,13 +59,13 @@ export const generateChatResponse = async (
   mode: AIModelMode,
   contextFiles?: { data: string; mimeType: string }[]
 ): Promise<ServiceResponse> => {
-  let model = 'gemini-3-pro-preview';
-  
+  let model = 'gemini-2.5-flash';
+
   // Inject Current Date and Time for relative date calculations
   const now = new Date();
   const currentDate = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const currentTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-  
+
   let config: any = {
     systemInstruction: `You are Aduitor, a helpful, witty, and slightly retro desktop assistant. You love helping with tasks. Today is ${currentDate} and the time is ${currentTime}. Keep answers concise unless asked for detail.`,
   };
@@ -73,21 +73,21 @@ export const generateChatResponse = async (
   const tools: any[] = [];
 
   if (mode === AIModelMode.Fast) {
-    model = 'gemini-flash-lite-latest';
+    model = 'gemini-2.5-flash';
   } else if (mode === AIModelMode.Thinking) {
-    model = 'gemini-3-pro-preview';
+    model = 'gemini-2.5-flash';
     config.thinkingConfig = { thinkingBudget: 32768 };
   } else if (mode === AIModelMode.Analysis) {
-    model = 'gemini-3-pro-preview';
+    model = 'gemini-2.5-flash';
   }
 
   // Enable Task Tool for Chat and Fast modes (and Analysis)
   if (mode === AIModelMode.Chat || mode === AIModelMode.Fast || mode === AIModelMode.Analysis) {
-      tools.push({ functionDeclarations: [addTaskTool] });
+    tools.push({ functionDeclarations: [addTaskTool] });
   }
 
   if (tools.length > 0) {
-      config.tools = tools;
+    config.tools = tools;
   }
 
   // Add files if present (Vision/Video Analysis)
@@ -110,22 +110,22 @@ export const generateChatResponse = async (
       contents: { parts },
       config,
     });
-    
+
     // Extract Tool Calls
     const toolCalls = response.candidates?.[0]?.content?.parts?.filter(p => p.functionCall).map(p => ({
-        id: 'call_' + Math.random().toString(36).substr(2, 9), // Simple ID generation
-        name: p.functionCall!.name,
-        args: p.functionCall!.args
+      id: 'call_' + Math.random().toString(36).substr(2, 9), // Simple ID generation
+      name: p.functionCall!.name,
+      args: p.functionCall!.args
     })) || [];
 
     // Extract Text (Gemini might return text AND function call, or just function call)
     let text = response.text || "";
-    
+
     // If only function call and no text, provide a default confirmation text if needed, 
     // but usually we rely on the client to handle the UI feedback for the action.
     // However, for chat flow, having some text is nice.
     if (!text && toolCalls.length > 0) {
-        text = ""; // We'll let the UI synthesize a message or just show the action
+      text = ""; // We'll let the UI synthesize a message or just show the action
     }
 
     return {
@@ -175,14 +175,14 @@ export const generateGroundedResponse = async (
     });
 
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    
+
     // Map SDK chunks to local type to fix type mismatch.
     // The SDK types allow undefined for uri/title, but our local type requires strings.
     const mappedChunks = groundingChunks.map((chunk: any) => ({
       web: chunk.web ? { uri: chunk.web.uri || '', title: chunk.web.title || '' } : undefined,
       maps: chunk.maps ? { uri: chunk.maps.googleMapsUri || chunk.maps.uri || '', title: chunk.maps.title || '' } : undefined,
     }));
-    
+
     return {
       text: response.text || "I couldn't find anything.",
       grounding: mappedChunks
@@ -249,14 +249,14 @@ export const generateImage = async (prompt: string, config: ImageGenConfig) => {
 
 // 5. Proactive Suggestions
 export const generateProactiveSuggestion = async (
-    tasks: Task[], 
-    streakState?: StreakState,
-    streakSettings?: StreakSettings
+  tasks: Task[],
+  streakState?: StreakState,
+  streakSettings?: StreakSettings
 ) => {
-  const model = 'gemini-flash-lite-latest';
+  const model = 'gemini-2.5-flash';
   const completedCount = tasks.filter(t => t.completed).length;
   const pendingTasks = tasks.filter(t => !t.completed);
-  
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const todayStr = today.toLocaleDateString('en-CA'); // YYYY-MM-DD
@@ -264,15 +264,15 @@ export const generateProactiveSuggestion = async (
   const overdueTasks = pendingTasks.filter(t => t.dueDate && t.dueDate < todayStr);
   const upcomingTasks = pendingTasks.filter(t => t.dueDate && t.dueDate >= todayStr);
   const noDateTasks = pendingTasks.filter(t => !t.dueDate);
-  
+
   let streakContext = "";
   if (streakState && streakSettings) {
-      const remaining = Math.max(0, streakSettings.target - streakState.currentPeriodProgress);
-      if (remaining > 0 && remaining <= 2) {
-          streakContext = `User is close to their ${streakSettings.period} goal! They need ${remaining} more task(s) to maintain their streak. Encourage them!`;
-      } else if (remaining === 0) {
-          streakContext = `User has hit their ${streakSettings.period} goal! Congratulate them on maintaining their streak.`;
-      }
+    const remaining = Math.max(0, streakSettings.target - streakState.currentPeriodProgress);
+    if (remaining > 0 && remaining <= 2) {
+      streakContext = `User is close to their ${streakSettings.period} goal! They need ${remaining} more task(s) to maintain their streak. Encourage them!`;
+    } else if (remaining === 0) {
+      streakContext = `User has hit their ${streakSettings.period} goal! Congratulate them on maintaining their streak.`;
+    }
   }
 
   const prompt = `
