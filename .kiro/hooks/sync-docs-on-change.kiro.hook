@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "Sync Documentation",
+  "description": "Watches TypeScript, TSX, and configuration files for changes and prompts the agent to update documentation in README.md or /docs folder accordingly.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/package.json",
+      "**/tsconfig.json",
+      "**/vite.config.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A source file has been modified. Review the changes and determine if the README.md or any documentation in a /docs folder needs to be updated to reflect these changes. Consider updating documentation for: API changes, new features, configuration changes, new components or services, changed dependencies, or architectural updates. If documentation updates are needed, make the appropriate changes to keep docs in sync with the codebase."
+  }
+}
