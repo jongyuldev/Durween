@@ -1,7 +1,7 @@
 # Project Structure
 
 ```
-aduitor/
+adiutor/
 ├── App.tsx              # Main application component (UI, state, logic)
 ├── index.tsx            # React entry point
 ├── index.html           # HTML template

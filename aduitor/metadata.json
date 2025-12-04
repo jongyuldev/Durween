@@ -1,9 +1,0 @@
-{
-  "name": "Aduitor - Your Daily Helper",
-  "description": "A retro-inspired, AI-powered daily task assistant reminiscent of the past, but built for the future with Gemini.",
-  "requestFramePermissions": [
-    "camera",
-    "microphone",
-    "geolocation"
-  ]
-}

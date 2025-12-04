@@ -37,7 +37,7 @@ Aduitor is a charming, retro-styled desktop assistant powered by Google's Gemini
 1.  Clone the repository:
     ```bash
     git clone https://github.com/jongyuldev/Durween.git
-    cd Durween/aduitor
+    cd Durween/adiutor
     ```
 
 2.  Install dependencies:
@@ -46,7 +46,7 @@ Aduitor is a charming, retro-styled desktop assistant powered by Google's Gemini
     ```
 
 3.  Configure Environment Variables:
-    *   Create a `.env` file in the root of the `aduitor` directory.
+    *   Create a `.env` file in the root of the `adiutor` directory.
     *   Add your API key:
         ```env
         API_KEY=your_gemini_api_key_here
