@@ -2,10 +2,6 @@
 
 Aduitor is a charming, retro-styled desktop assistant powered by Google's Gemini API. It lives on your screen as a friendly "Ghost" character, ready to help you manage tasks, answer questions, generate images, and more.
 
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
 ## ✨ Features
 
 *   **👻 Interactive Ghost Companion:** A floating, draggable character that acts as your interface.
