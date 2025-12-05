@@ -538,10 +538,8 @@ export default function App() {
                 });
 
                 // Auto-switch mode if video
-                if (file.type.startsWith('video/')) {
-                    setSelectedMode(AIModelMode.Analysis);
-                } else if (file.type.startsWith('image/') && selectedMode !== AIModelMode.Analysis) {
-                    // Assume analysis if uploading image in default mode
+                // Auto-switch to Picture Analysis mode
+                if (file.type.startsWith('video/') || file.type.startsWith('image/')) {
                     setSelectedMode(AIModelMode.Analysis);
                 }
             };
@@ -1078,27 +1076,13 @@ export default function App() {
                             {[
                                 { mode: AIModelMode.Chat, icon: <Brain size={14} />, label: 'Chat' },
                                 { mode: AIModelMode.Fast, icon: <Zap size={14} />, label: 'Fast' },
-                                { mode: AIModelMode.Thinking, icon: <Loader2 size={14} />, label: 'Think' },
                                 { mode: AIModelMode.Search, icon: <Globe size={14} />, label: 'Web' },
                                 { mode: AIModelMode.Maps, icon: <MapPin size={14} />, label: 'Maps' },
-                                { mode: AIModelMode.ImageGen, icon: <ImageIcon size={14} />, label: 'Draw' },
-                                { mode: AIModelMode.Analysis, icon: <VideoIcon size={14} />, label: 'Vision' },
+                                { mode: AIModelMode.Analysis, icon: <ImageIcon size={14} />, label: 'Picture' },
                             ].map((m) => (
                                 <button
                                     key={m.mode}
                                     onClick={() => {
-                                        // Restrict modes that aren't supported by gemini-2.5-flash or are under development
-                                        if (m.mode === AIModelMode.Thinking || m.mode === AIModelMode.ImageGen) {
-                                            setMessages(prev => [...prev, {
-                                                id: Date.now().toString(),
-                                                text: `The '${m.label}' feature is currently under development and will be added in the future!`,
-                                                sender: Sender.Bot,
-                                                timestamp: Date.now(),
-                                                type: MessageType.Text
-                                            }]);
-                                            return;
-                                        }
-
                                         setSelectedMode(m.mode);
                                         setShowImgSettings(false);
                                     }}
