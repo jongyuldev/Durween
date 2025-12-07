@@ -1109,7 +1109,7 @@ export default function App() {
                         )}
 
                         {/* Chat Area */}
-                        <div className={`flex-1 overflow-y-auto p-4 space-y-4 max-h-60 transition-colors duration-300 ${chatAreaClass}`}>
+                        <div className={`flex-1 overflow-y-auto p-4 space-y-4 max-h-96 transition-colors duration-300 ${chatAreaClass}`}>
                             {messages.map((msg) => (
                                 <div key={msg.id} className={`flex flex-col ${msg.sender === Sender.User ? 'items-end' : 'items-start'}`}>
                                     <div
